@@ -29,6 +29,13 @@ pub fn build(b: *std.Build) void {
     // step when running `zig build`).
     b.installArtifact(exe);
 
+    // raylib build config
+    const raylib_build = @import("deps/raylib/src/build.zig");
+    const raylib = raylib_build.addRaylib(b, target, optimize, .{});
+    exe.linkLibC();
+    exe.linkLibrary(raylib);
+    exe.addIncludePath("deps/raylib/src");
+
     // This *creates* a Run step in the build graph, to be executed when another
     // step is evaluated that depends on it. The next line below will establish
     // such a dependency.
